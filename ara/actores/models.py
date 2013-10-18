@@ -4,7 +4,7 @@ from django.contrib.gis.db import models as models_gis
 class Organizacion(models.Model):
     nombre = models.CharField()
     descripcion = models.TextField()
-    
+
 class Institucion(models.Model):
     nombre = models.CharField()
     descripcion = models.TextField()

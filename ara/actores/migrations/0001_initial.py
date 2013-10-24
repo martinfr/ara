@@ -31,19 +31,25 @@ class Migration(SchemaMigration):
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('nombre', self.gf('django.db.models.fields.CharField')(max_length=30)),
             ('descripcion', self.gf('django.db.models.fields.TextField')(default='', blank=True)),
-            ('fecha_inicio', self.gf('django.db.models.fields.DateField')()),
-            ('fecha_fin', self.gf('django.db.models.fields.DateField')()),
         ))
         db.send_create_signal(u'actores', ['Agrupacion'])
 
-        # Adding M2M table for field instituciones on 'Agrupacion'
-        m2m_table_name = db.shorten_name(u'actores_agrupacion_instituciones')
-        db.create_table(m2m_table_name, (
-            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
-            ('agrupacion', models.ForeignKey(orm[u'actores.agrupacion'], null=False)),
-            ('institucion', models.ForeignKey(orm[u'actores.institucion'], null=False))
+        # Adding model 'Subscripcion'
+        db.create_table(u'actores_subscripcion', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('institucion', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['actores.Institucion'])),
+            ('agrupacion', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['actores.Agrupacion'])),
         ))
-        db.create_unique(m2m_table_name, ['agrupacion_id', 'institucion_id'])
+        db.send_create_signal(u'actores', ['Subscripcion'])
+
+        # Adding model 'Atributo'
+        db.create_table(u'actores_atributo', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('nombre', self.gf('django.db.models.fields.CharField')(max_length=30)),
+            ('valor', self.gf('django.db.models.fields.CharField')(max_length=30)),
+            ('subscripcion', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['actores.Institucion'])),
+        ))
+        db.send_create_signal(u'actores', ['Atributo'])
 
 
     def backwards(self, orm):
@@ -56,19 +62,26 @@ class Migration(SchemaMigration):
         # Deleting model 'Agrupacion'
         db.delete_table(u'actores_agrupacion')
 
-        # Removing M2M table for field instituciones on 'Agrupacion'
-        db.delete_table(db.shorten_name(u'actores_agrupacion_instituciones'))
+        # Deleting model 'Subscripcion'
+        db.delete_table(u'actores_subscripcion')
+
+        # Deleting model 'Atributo'
+        db.delete_table(u'actores_atributo')
 
 
     models = {
         u'actores.agrupacion': {
             'Meta': {'object_name': 'Agrupacion'},
             'descripcion': ('django.db.models.fields.TextField', [], {'default': "''", 'blank': 'True'}),
-            'fecha_fin': ('django.db.models.fields.DateField', [], {}),
-            'fecha_inicio': ('django.db.models.fields.DateField', [], {}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'instituciones': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['actores.Institucion']", 'symmetrical': 'False'}),
             'nombre': ('django.db.models.fields.CharField', [], {'max_length': '30'})
+        },
+        u'actores.atributo': {
+            'Meta': {'object_name': 'Atributo'},
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'nombre': ('django.db.models.fields.CharField', [], {'max_length': '30'}),
+            'subscripcion': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['actores.Institucion']"}),
+            'valor': ('django.db.models.fields.CharField', [], {'max_length': '30'})
         },
         u'actores.institucion': {
             'Meta': {'object_name': 'Institucion'},
@@ -83,6 +96,12 @@ class Migration(SchemaMigration):
             'descripcion': ('django.db.models.fields.TextField', [], {'default': "''", 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'nombre': ('django.db.models.fields.CharField', [], {'max_length': '30'})
+        },
+        u'actores.subscripcion': {
+            'Meta': {'object_name': 'Subscripcion'},
+            'agrupacion': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['actores.Agrupacion']"}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'institucion': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['actores.Institucion']"})
         }
     }
 

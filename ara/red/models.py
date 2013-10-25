@@ -1,21 +1,34 @@
 from django.contrib.gis.db import models
 
+class Proveedor(models.Model):
+    nombre = models.CharField(max_length=100)
+    contacto = models.CharField(max_length=100,blank=True,default="")
+    telefono = models.CharField(max_length=20,blank=True,default="")
+    email = models.CharField(max_length=60,blank=True,default="")
+
+class Enlace(models.Model):
+    capacidad = models.DecimalField(max_digits=10, decimal_places=2)
+    
+class FibraOptica(Enlace):
+    hilos = models.IntegerField()
+
 class Nodo(models.Model):
-    nombre = models.CharField(max_length=30,blank=True,default="")
+    proveedor = models.ForeignKey(Proveedor,blank=True,null=True,on_delete=models.SET_NULL)
+    nombre = models.CharField(max_length=100,blank=True,default="")
     descripcion = models.TextField(blank=True,default="")
+    ip = models.GenericIPAddressField()
     ubicacion = models.PointField()
     objects = models.GeoManager()
-
+    
     def __unicode__(self):
         return self.nombre
     
     class Meta:
         verbose_name_plural = "Nodos"    
     
-    
 class Vinculo(models.Model):
-    nombre = models.CharField(max_length=30,blank=True,default="")
-    descripcion = models.TextField(blank=True,default="")
+    proveedor = models.ForeignKey(Proveedor,blank=True,null=True,on_delete=models.SET_NULL)
+    enlace = models.ForeignKey(Enlace,blank=True,null=True,on_delete=models.SET_NULL)
     recorrido = models.LineStringField()
     nodo1 = models.ForeignKey(Nodo,blank=True,null=True,on_delete=models.SET_NULL,related_name="nodo1")
     nodo2 = models.ForeignKey(Nodo,blank=True,null=True,on_delete=models.SET_NULL,related_name="nodo2")
@@ -26,4 +39,4 @@ class Vinculo(models.Model):
     
     class Meta:
         verbose_name_plural = "Vinculos"    
-    
+

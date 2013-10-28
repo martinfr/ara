@@ -38,7 +38,7 @@ class Migration(SchemaMigration):
             ('proveedor', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['red.Proveedor'], null=True, on_delete=models.SET_NULL, blank=True)),
             ('nombre', self.gf('django.db.models.fields.CharField')(default='', max_length=100, blank=True)),
             ('descripcion', self.gf('django.db.models.fields.TextField')(default='', blank=True)),
-            ('ip', self.gf('django.db.models.fields.GenericIPAddressField')(max_length=39)),
+            ('ip', self.gf('django.db.models.fields.GenericIPAddressField')(default='', max_length=39, blank=True)),
             ('ubicacion', self.gf('django.contrib.gis.db.models.fields.PointField')()),
         ))
         db.send_create_signal(u'red', ['Nodo'])
@@ -87,7 +87,7 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'Nodo'},
             'descripcion': ('django.db.models.fields.TextField', [], {'default': "''", 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'ip': ('django.db.models.fields.GenericIPAddressField', [], {'max_length': '39'}),
+            'ip': ('django.db.models.fields.GenericIPAddressField', [], {'default': "''", 'max_length': '39', 'blank': 'True'}),
             'nombre': ('django.db.models.fields.CharField', [], {'default': "''", 'max_length': '100', 'blank': 'True'}),
             'proveedor': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['red.Proveedor']", 'null': 'True', 'on_delete': 'models.SET_NULL', 'blank': 'True'}),
             'ubicacion': ('django.contrib.gis.db.models.fields.PointField', [], {})

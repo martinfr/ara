@@ -8,7 +8,7 @@ class Proveedor(models.Model):
 
 class Enlace(models.Model):
     capacidad = models.DecimalField(max_digits=10, decimal_places=2)
-    
+
 class FibraOptica(Enlace):
     hilos = models.IntegerField()
 
@@ -16,7 +16,7 @@ class Nodo(models.Model):
     proveedor = models.ForeignKey(Proveedor,blank=True,null=True,on_delete=models.SET_NULL)
     nombre = models.CharField(max_length=100,blank=True,default="")
     descripcion = models.TextField(blank=True,default="")
-    ip = models.GenericIPAddressField()
+    ip = models.GenericIPAddressField(blank=True,default="0.0.0.0")
     ubicacion = models.PointField()
     objects = models.GeoManager()
     
@@ -25,7 +25,7 @@ class Nodo(models.Model):
     
     class Meta:
         verbose_name_plural = "Nodos"    
-    
+
 class Vinculo(models.Model):
     proveedor = models.ForeignKey(Proveedor,blank=True,null=True,on_delete=models.SET_NULL)
     enlace = models.ForeignKey(Enlace,blank=True,null=True,on_delete=models.SET_NULL)
@@ -35,7 +35,7 @@ class Vinculo(models.Model):
     objects = models.GeoManager()
 
     def __unicode__(self):
-        return self.nombre
+        return "vinculo: " + self.nodo1.nombre + " - " + self.nodo1.nombre
     
     class Meta:
         verbose_name_plural = "Vinculos"    

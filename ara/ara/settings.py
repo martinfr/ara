@@ -14,7 +14,7 @@ DATABASES = {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'NAME': 'ara_server',
         'USER': 'ara_server',
-        'PASSWORD': 'ara_server',
+        'PASSWORD': '4r4_s3rv3r',
         'HOST': 'vm-pg-ara',
         'PORT': '',
     }

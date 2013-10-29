@@ -168,3 +168,5 @@ LOGGING = {
         },
     }
 }
+
+GRAPPELLI_ADMIN_TITLE = 'ARA'

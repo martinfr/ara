@@ -109,6 +109,7 @@ TEMPLATE_DIRS = (
 )
 
 INSTALLED_APPS = (
+    'grappelli',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -119,7 +120,6 @@ INSTALLED_APPS = (
     'django.contrib.gis',
     'django_extensions',
     'django_extensions.tests',
-    'grappelli',
     'south',
     'red',
     'actores',

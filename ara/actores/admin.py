@@ -30,9 +30,9 @@ class InstitucionAdmin(admin.ModelAdmin):
     list_filter = ['organizacion']
     search_fields = ['nombre', 'descripcion']
     inlines =[SubscripcionInline]
-    actions = [export_as_csv,export_as_xls,export_as_geojson, export_as_kml, export_as_shapefile]
+    actions = [export_as_csv,export_as_xls,export_as_geojson, export_as_kml]#, export_as_shapefile]
     vector_format_geometry_field = 'ubicacion'
-    vector_format_fields = ['nombre', 'descripcion','calle','numero','piso','depto','localidad','provincia','cp']
+    vector_format_fields = ['nombre','descripcion','calle','numero','piso','depto','localidad','provincia','cp']
     
 class InstitucionInline(admin.TabularInline):
     model = Institucion

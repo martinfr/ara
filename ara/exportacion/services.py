@@ -47,7 +47,7 @@ def kml(archivo, campo_geometria, campos_atributos, registros):
     return archivo 
 
 def shp(nombre, campo_geometria, campos_atributos, registros):
-    shp_response = ShpResponder(registros)
+    shp_response = ShpResponder(registros,geo_field=campo_geometria)
     shp_response.file_name = unicode(nombre).replace('.', '_')
     return shp_response()
 

@@ -24,15 +24,15 @@ class SubscripcionInline(admin.TabularInline):
     
 class InstitucionAdmin(admin.ModelAdmin):
     #formfield_overrides = {models.CharField: {'widget': TextInput(attrs={'size':'20'})},}
-    list_display = ('nombre','descripcion','organizacion',)
+    list_display = ('nombre','descripcion','calle','numero','piso','depto','localidad','provincia','cp','organizacion',)
     list_display_links = ('nombre',)
     fields = ('nombre', 'descripcion',('calle','numero',),('piso','depto',),('localidad','provincia',),'cp','organizacion',)
-    list_filter = ['organizacion']
-    search_fields = ['nombre', 'descripcion']
+    list_filter = ['organizacion','subscripcion__agrupacion__nombre']
+    search_fields = ['nombre','descripcion','calle','numero','localidad','provincia','organizacion__nombre','subscripcion__agrupacion__nombre']
     inlines =[SubscripcionInline]
-    actions = [export_as_csv,export_as_xls,export_as_geojson, export_as_kml]#, export_as_shapefile]
+    actions = [export_as_csv,export_as_xls,export_as_geojson,export_as_kml,export_as_shapefile]
     vector_format_geometry_field = 'ubicacion'
-    vector_format_fields = ['nombre','descripcion','calle','numero','piso','depto','localidad','provincia','cp']
+    vector_format_fields = ['nombre','calle','numero','piso','depto','localidad','provincia','cp']
     
 class InstitucionInline(admin.TabularInline):
     model = Institucion
@@ -47,6 +47,8 @@ class OrganizacionAdmin(admin.ModelAdmin):
     search_fields = ['nombre', 'descripcion']
     inlines =[InstitucionInline]
     actions = [export_as_csv,export_as_xls]
+    vector_format_geometry_field = "" 
+    vector_format_fields = ['nombre','descripcion']
     
 admin.site.register(Institucion,InstitucionAdmin)
 admin.site.register(Organizacion,OrganizacionAdmin)

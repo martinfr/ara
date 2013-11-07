@@ -16,19 +16,11 @@ def export_as_shapefile(modeladmin, request, queryset):
 export_as_shapefile.short_description = 'Exportar a Shapefile'
 
 def export_as_csv(modeladmin, request, queryset):
-    from django.core.exceptions import PermissionDenied
-    
-    if not request.user.is_staff:
-        raise PermissionDenied
     return csv_response(modeladmin.model._meta,modeladmin.vector_format_geometry_field,modeladmin.vector_format_fields,queryset) 
 
 export_as_csv.short_description = "Exportar a CSV"
 
 def export_as_xls(modeladmin, request, queryset):
-    from django.core.exceptions import PermissionDenied
-    
-    if not request.user.is_staff:
-        raise PermissionDenied
     return xls_response(modeladmin.model._meta,modeladmin.vector_format_geometry_field,modeladmin.vector_format_fields,queryset) 
     
 export_as_xls.short_description = "Exportar a XLS"

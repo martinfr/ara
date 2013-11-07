@@ -1,9 +1,7 @@
 from django.contrib import admin
-#from django.db import models
-#from django.forms import TextInput
 from actores.models import Institucion, Organizacion, Agrupacion, Subscripcion, Atributo
 from relatives.utils import object_edit_link
-from exportacion.actions import export_as_csv, export_as_xls, export_as_geojson, export_as_kml, export_as_shapefile
+from exportacion.actions import export_as_csv, export_as_xls, export_as_geojson, export_as_kml
 
 class AtributoInline(admin.TabularInline):
     model = Atributo
@@ -13,7 +11,6 @@ class SubscripcionAdmin(admin.ModelAdmin):
     list_filter = ['agrupacion']
     search_fields = ['institucion']
     inlines =[AtributoInline]
-    actions = [export_as_csv, export_as_xls]    
 
 class SubscripcionInline(admin.TabularInline):
     model = Subscripcion
@@ -23,14 +20,13 @@ class SubscripcionInline(admin.TabularInline):
     extra = 0
     
 class InstitucionAdmin(admin.ModelAdmin):
-    #formfield_overrides = {models.CharField: {'widget': TextInput(attrs={'size':'20'})},}
     list_display = ('nombre','descripcion','calle','numero','piso','depto','localidad','provincia','cp','organizacion',)
     list_display_links = ('nombre',)
     fields = ('nombre', 'descripcion',('calle','numero',),('piso','depto',),('localidad','provincia',),'cp','organizacion',)
     list_filter = ['organizacion','subscripcion__agrupacion__nombre']
     search_fields = ['nombre','descripcion','calle','numero','localidad','provincia','organizacion__nombre','subscripcion__agrupacion__nombre']
     inlines =[SubscripcionInline]
-    actions = [export_as_csv,export_as_xls,export_as_geojson,export_as_kml,export_as_shapefile]
+    actions = [export_as_csv,export_as_xls,export_as_geojson,export_as_kml]
     vector_format_geometry_field = 'ubicacion'
     vector_format_fields = ['nombre','calle','numero','piso','depto','localidad','provincia','cp']
     
@@ -54,4 +50,3 @@ admin.site.register(Institucion,InstitucionAdmin)
 admin.site.register(Organizacion,OrganizacionAdmin)
 admin.site.register(Agrupacion)
 admin.site.register(Subscripcion,SubscripcionAdmin)
-#admin.site.register(Atributo)

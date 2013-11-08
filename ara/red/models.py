@@ -1,10 +1,10 @@
 from django.contrib.gis.db import models
 
 class Proveedor(models.Model):
-    nombre = models.CharField(max_length=100)
-    contacto = models.CharField(max_length=100,blank=True,default="")
+    nombre = models.CharField(max_length=200)
+    contacto = models.CharField(max_length=200,blank=True,default="")
     telefono = models.CharField(max_length=20,blank=True,default="")
-    email = models.CharField(max_length=60,blank=True,default="")
+    email = models.CharField(max_length=200,blank=True,default="")
 
 class Enlace(models.Model):
     capacidad = models.DecimalField(max_digits=10, decimal_places=2)
@@ -14,7 +14,7 @@ class FibraOptica(Enlace):
 
 class Nodo(models.Model):
     proveedor = models.ForeignKey(Proveedor,blank=True,null=True,on_delete=models.SET_NULL)
-    nombre = models.CharField(max_length=100,blank=True,default="")
+    nombre = models.CharField(max_length=200,blank=True,default="")
     descripcion = models.TextField(blank=True,default="")
     ip = models.GenericIPAddressField(blank=True,default="0.0.0.0")
     ubicacion = models.PointField()

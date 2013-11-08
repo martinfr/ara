@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.gis.db import models as models_gis
 
 class Organizacion(models.Model):
-    nombre = models.CharField(max_length=100)
+    nombre = models.CharField(max_length=200)
     descripcion = models.TextField(blank=True,default="")
     
     def __unicode__(self):
@@ -12,15 +12,15 @@ class Organizacion(models.Model):
         verbose_name_plural = "Organizaciones"    
 
 class Institucion(models.Model):
-    nombre = models.CharField(max_length=100)
+    nombre = models.CharField(max_length=200)
     descripcion = models.TextField(blank=True,default="")
-    calle = models.CharField(max_length=100,blank=True,default="")
+    calle = models.CharField(max_length=200,blank=True,default="")
     numero  = models.CharField(max_length=10,blank=True,default="")
     cp = models.CharField(max_length=30,blank=True,default="")
     piso = models.CharField(max_length=30,blank=True,default="")
     depto = models.CharField(max_length=30,blank=True,default="")
-    localidad = models.CharField(max_length=100,blank=True,default="")
-    provincia = models.CharField(max_length=60,blank=True,default="")
+    localidad = models.CharField(max_length=200,blank=True,default="")
+    provincia = models.CharField(max_length=200,blank=True,default="")
     ubicacion = models_gis.PointField()
     organizacion = models.ForeignKey(Organizacion,blank=True,null=True,on_delete=models.SET_NULL)
     objects = models_gis.GeoManager()
@@ -32,7 +32,7 @@ class Institucion(models.Model):
         verbose_name_plural = "Instituciones"
 
 class Agrupacion(models.Model):
-    nombre = models.CharField(max_length=100)
+    nombre = models.CharField(max_length=200)
     descripcion = models.TextField(blank=True,default="")
 
     def __unicode__(self):
@@ -52,8 +52,8 @@ class Subscripcion(models.Model):
         verbose_name_plural = "Subscripciones"
 
 class Atributo(models.Model):
-    nombre = models.CharField(max_length=60)
-    valor = models.CharField(max_length=60)
+    nombre = models.CharField(max_length=100)
+    valor = models.CharField(max_length=100)
     subscripcion = models.ForeignKey(Subscripcion)
 
     class Meta:

@@ -15,10 +15,10 @@ class SubscripcionAdmin(admin.ModelAdmin):
 class SubscripcionInline(admin.TabularInline):
     model = Subscripcion
     edit_link = object_edit_link("Ir","Crear..")
-    fields = [edit_link, 'agrupacion']
+    fields = [edit_link, 'agrupacion', 'institucion']
     readonly_fields = [edit_link]
     extra = 0
-    
+
 class InstitucionAdmin(admin.ModelAdmin):
     list_display = ('nombre','descripcion','calle','numero','piso','depto','localidad','provincia','cp','organizacion',)
     list_display_links = ('nombre',)
@@ -46,7 +46,16 @@ class OrganizacionAdmin(admin.ModelAdmin):
     vector_format_geometry_field = "" 
     vector_format_fields = ['nombre','descripcion']
     
+class AgrupacionAdmin(admin.ModelAdmin):
+    fields = ('nombre', 'descripcion')
+    list_display = ('nombre','descripcion')    
+    search_fields = ['nombre', 'descripcion']
+    inlines =[SubscripcionInline]
+    actions = [export_as_csv,export_as_xls]
+    vector_format_geometry_field = "" 
+    vector_format_fields = ['nombre','descripcion']
+    
 admin.site.register(Institucion,InstitucionAdmin)
 admin.site.register(Organizacion,OrganizacionAdmin)
-admin.site.register(Agrupacion)
+admin.site.register(Agrupacion,AgrupacionAdmin)
 admin.site.register(Subscripcion,SubscripcionAdmin)

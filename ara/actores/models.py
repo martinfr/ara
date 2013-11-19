@@ -9,7 +9,8 @@ class Organizacion(models.Model):
         return self.nombre
     
     class Meta:
-        verbose_name_plural = "Organizaciones"    
+        verbose_name_plural = "Organizaciones"
+        ordering = ['nombre',]
 
 class Institucion(models.Model):
     nombre = models.CharField(max_length=200)
@@ -30,6 +31,7 @@ class Institucion(models.Model):
     
     class Meta:
         verbose_name_plural = "Instituciones"
+        ordering = ['nombre',]
 
 class Agrupacion(models.Model):
     nombre = models.CharField(max_length=200)
@@ -40,6 +42,7 @@ class Agrupacion(models.Model):
     
     class Meta:
         verbose_name_plural = "Agrupaciones"
+        ordering = ['nombre',]        
 
 class Subscripcion(models.Model):
     institucion = models.ForeignKey(Institucion)
@@ -58,8 +61,8 @@ class Atributo(models.Model):
 
     class Meta:
         verbose_name_plural = "Atributos"
+        ordering = ['nombre',]
 
     def __unicode__(self):
-        return self.nombre + " = " + self.valor 
-    
+        return self.nombre + " = " + self.valor
     

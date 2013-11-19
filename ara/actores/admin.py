@@ -1,4 +1,4 @@
-from django.contrib import admin
+from django.contrib.gis import admin
 from actores.models import Institucion, Organizacion, Agrupacion, Subscripcion, Atributo
 from relatives.utils import object_edit_link
 from exportacion.actions import export_as_csv, export_as_xls, export_as_geojson, export_as_kml
@@ -19,10 +19,10 @@ class SubscripcionInline(admin.TabularInline):
     readonly_fields = [edit_link]
     extra = 0
 
-class InstitucionAdmin(admin.ModelAdmin):
+class InstitucionAdmin(admin.OSMGeoAdmin):
     list_display = ('nombre','descripcion','calle','numero','piso','depto','localidad','provincia','cp','organizacion',)
     list_display_links = ('nombre',)
-    fields = ('nombre', 'descripcion',('calle','numero',),('piso','depto',),('localidad','provincia',),'cp','organizacion',)
+    fields = ('nombre', 'descripcion',('calle','numero',),('piso','depto',),('localidad','provincia',),'cp','organizacion','ubicacion',)
     list_filter = ['organizacion','subscripcion__agrupacion__nombre']
     search_fields = ['nombre','descripcion','calle','numero','localidad','provincia','organizacion__nombre','subscripcion__agrupacion__nombre']
     inlines =[SubscripcionInline]

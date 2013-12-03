@@ -1,20 +1,37 @@
 from django.contrib.gis import admin
 from red.models import Nodo, Vinculo
-from exportacion.actions import export_as_geojson, export_as_kml, export_as_shapefile
-    
-class VinculoAdmin(admin.OSMGeoAdmin):
-    actions = [export_as_geojson, export_as_kml, export_as_shapefile]
-    vector_format_geometry_field = 'recorrido'
-    vector_format_fields = []
-    wms_url = 'http://200.10.202.20/geoserver/opengeo/wms'
-    wms_layer = 'opengeo:red_vinculo'
-    wms_name = 'Innova Red'
-    wms_options = {'format': 'image/jpeg'}
+from django.contrib.gis.db.models.fields import PointField
+import floppyforms as forms
 
-class NodoAdmin(admin.OSMGeoAdmin):
-    actions = [export_as_geojson, export_as_kml, export_as_shapefile]
-    vector_format_geometry_field = 'ubicacion'
-    vector_format_fields = ['nombre']
+class GMapPointWidget(forms.gis.PointWidget, forms.gis.BaseGMapWidget):
+    template_name = 'ara/gis/ara_google.html'
+    
+    def get_context_data(self):
+        ctx = super(GMapPointWidget, self).get_context_data()
+        #ctx['map_options'] = '{layers:[new OpenLayers.Layer.WMS( "OpenLayers WMS", "http://vmap0.tiles.osgeo.org/wms/vmap0?", {layers: "basic"})]}'
+        ctx['map_options'] = '{}'
+        return ctx
+
+class GMapForm(forms.ModelForm):
+    class Meta:
+        model = Nodo
+        fields = ['nombre','proveedor','descripcion','ip','ubicacion']
+        widgets = {
+            'ubicacion': GMapPointWidget,
+        }
+    geocoding = forms.CharField(widget = forms.Textarea(attrs = {
+            'onkeypress' : "return geocodificar(event)",
+            'cols': 80,
+            'rows': 10,
+            }))
+    class Media:
+        js = ('geocodificar.js',)
+    
+
+class NodoAdmin(admin.ModelAdmin):
+    form = GMapForm
+    #exclude = ['ubicacion']
+    
 
 admin.site.register(Nodo,NodoAdmin)
-admin.site.register(Vinculo,VinculoAdmin)
+admin.site.register(Vinculo)

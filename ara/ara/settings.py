@@ -121,6 +121,7 @@ INSTALLED_APPS = (
     'django_extensions',
     'django_extensions.tests',
     'south',
+    'floppyforms',
     'red',
     'actores',
 )

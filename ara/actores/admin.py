@@ -2,6 +2,9 @@ from django.contrib.gis import admin
 from actores.models import Institucion, Organizacion, Agrupacion, Subscripcion, Atributo
 from relatives.utils import object_edit_link
 from exportacion.actions import export_as_csv, export_as_xls, export_as_geojson, export_as_kml
+from django.contrib.gis.db.models.fields import PointField
+from widgets.widgets import GMapPointWidget
+
 
 class AtributoInline(admin.TabularInline):
     model = Atributo
@@ -19,7 +22,7 @@ class SubscripcionInline(admin.TabularInline):
     readonly_fields = [edit_link]
     extra = 0
 
-class InstitucionAdmin(admin.OSMGeoAdmin):
+class InstitucionAdmin(admin.ModelAdmin):
     list_display = ('nombre','descripcion','calle','numero','piso','depto','localidad','provincia','cp','organizacion',)
     list_display_links = ('nombre',)
     fields = ('nombre', 'descripcion',('calle','numero',),('piso','depto',),('localidad','provincia',),'cp','organizacion','ubicacion',)
@@ -29,6 +32,9 @@ class InstitucionAdmin(admin.OSMGeoAdmin):
     actions = [export_as_csv,export_as_xls,export_as_geojson,export_as_kml]
     vector_format_geometry_field = 'ubicacion'
     vector_format_fields = ['nombre','calle','numero','piso','depto','localidad','provincia','cp']
+    formfield_overrides = {
+        PointField: {'widget': GMapPointWidget }
+    }    
     
 class InstitucionInline(admin.TabularInline):
     model = Institucion

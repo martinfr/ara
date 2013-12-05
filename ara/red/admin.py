@@ -12,7 +12,8 @@ class NodoAdmin(admin.ModelAdmin):
 class VinculoAdmin(admin.ModelAdmin):
     formfield_overrides = {
         LineStringField: {'widget': GMapLineStringWidget(
-            attrs={'map_options':'{layers:[new OpenLayers.Layer.WMS( "OpenLayers WMS", "http://vmap0.tiles.osgeo.org/wms/vmap0?", {layers: "basic", srs: "EPSG:4326", transparent: true},{isBaseLayer: false})]}'})}
+            #attrs={'map_options':'{layers:[new OpenLayers.Layer.WMS( "OpenLayers WMS", "http://vmap0.tiles.osgeo.org/wms/vmap0?", {layers: "basic", srs: "EPSG:4326", transparent: true},{isBaseLayer: false})]}'}
+            )}
     }
 
 admin.site.register(Nodo,NodoAdmin)

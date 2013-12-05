@@ -1,5 +1,6 @@
 from django.contrib.gis import admin
 from red.models import Nodo, Vinculo
+
 from django.contrib.gis.db.models.fields import PointField, LineStringField
 from widgets.widgets import GMapPointWidget, GMapLineStringWidget
 

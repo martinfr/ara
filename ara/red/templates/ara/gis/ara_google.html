@@ -2,14 +2,13 @@
 
 {% block map_options %}
 
-//var map_options = {{map_options|safe}};
+var map_options = {{map_options|safe}};
 
 var geocoder = 'vacio';
 
 function geocodificar(){
-	geocoder.geocode( { 'address': document.getElementById("textToolbar").value}, function(results, status) {
+	geocoder.geocode( { 'address': document.getElementById("{{ module }}_direccion").value}, function(results, status) {
 		if (status == google.maps.GeocoderStatus.OK) {
-			alert(results[0].geometry.location);
 			var lat = results[0].geometry.location.lat();
 			var lng = results[0].geometry.location.lng();
 			var centro = new OpenLayers.LonLat(lng,lat);
@@ -85,7 +84,7 @@ var customControl = OpenLayers.Class(OpenLayers.Control, {
     position: new OpenLayers.Pixel(50,0),
     draw: function () {
         var div = OpenLayers.Control.prototype.draw.apply(this, arguments);
-        var html = "<div ><input type='text' id='textToolbar' value='' style='height:25px; width:300px;'/><button type='button' onclick='geocodificar()' >Ir..</button></div>";
+        var html = "<div ><input type='text' id='{{ module }}_direccion' value='' style='height:25px; width:300px;'/><button type='button' onclick='geocodificar()' >Ir..</button></div>";
         div.innerHTML = html;
         this.keepEvents(div);
         return div;
@@ -93,8 +92,12 @@ var customControl = OpenLayers.Class(OpenLayers.Control, {
     allowSelection: true // REQUIRED!    
 });
 
-var map_options = {
-	controls: [new customControl(),new OpenLayers.Control.PanZoomBar(),]
+if(map_options['controls'] == null){
+	map_options['controls'] = [];
 };
+
+map_options['controls'].push(new OpenLayers.Control.PanZoom());
+map_options['controls'].push(new OpenLayers.Control.LayerSwitcher());
+map_options['controls'].push(new customControl());
 
 {% endblock %}

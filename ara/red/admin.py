@@ -1,31 +1,18 @@
 from django.contrib.gis import admin
 from red.models import Nodo, Vinculo
-from django.contrib.gis.db.models.fields import PointField
-import floppyforms as forms
-
-class GMapPointWidget(forms.gis.PointWidget, forms.gis.BaseGMapWidget):
-    template_name = 'ara/gis/ara_google.html'
-    
-    def get_context_data(self):
-        ctx = super(GMapPointWidget, self).get_context_data()
-        #ctx['map_options'] = '{layers:[new OpenLayers.Layer.WMS( "OpenLayers WMS", "http://vmap0.tiles.osgeo.org/wms/vmap0?", {layers: "basic"})]}'
-        ctx['map_options'] = '{}'
-        return ctx
-    class Media:
-        js = ('geocodificar.js',)
-
-class GMapForm(forms.ModelForm):
-    class Meta:
-        model = Nodo
-        fields = ['nombre','proveedor','descripcion','ip','ubicacion']
-        widgets = {
-            'ubicacion': GMapPointWidget,
-        }
+from django.contrib.gis.db.models.fields import PointField, LineStringField
+from widgets.widgets import GMapPointWidget, GMapLineStringWidget
 
 class NodoAdmin(admin.ModelAdmin):
-    form = GMapForm
-    #exclude = ['ubicacion']
+    formfield_overrides = {
+        PointField: {'widget': GMapPointWidget }
+    }
     
+class VinculoAdmin(admin.ModelAdmin):
+    formfield_overrides = {
+        LineStringField: {'widget': GMapLineStringWidget(
+            attrs={'map_options':'{layers:[new OpenLayers.Layer.WMS( "OpenLayers WMS", "http://vmap0.tiles.osgeo.org/wms/vmap0?", {layers: "basic", srs: "EPSG:4326", transparent: true},{isBaseLayer: false})]}'})}
+    }
 
 admin.site.register(Nodo,NodoAdmin)
-admin.site.register(Vinculo)
+admin.site.register(Vinculo,VinculoAdmin)

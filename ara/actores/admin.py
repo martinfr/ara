@@ -14,6 +14,10 @@ class SubscripcionAdmin(admin.ModelAdmin):
     list_filter = ['agrupacion']
     search_fields = ['institucion']
     inlines =[AtributoInline]
+    actions = [export_as_csv,export_as_xls]
+    vector_format_geometry_field = "" 
+    vector_format_fields = ['agrupacion','institucion']
+    
 
 class SubscripcionInline(admin.TabularInline):
     model = Subscripcion

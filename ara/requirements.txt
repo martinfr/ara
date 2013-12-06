@@ -12,3 +12,4 @@ pyExcelerator==0.6.4.1
 simplejson==3.3.1
 vectorformats==0.1
 wsgiref==0.1.2
+git+https://github.com/mmassigoge/carte-util.git
